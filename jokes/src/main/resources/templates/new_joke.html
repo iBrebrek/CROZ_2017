@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>New Joke</title>
+</head>
+<body>
+	<form th:action="@{/logout}" method="post">
+    	<input type="submit" value="Sign Out"/>
+    </form>
+	<h3 th:inline="text">[[${#httpServletRequest.remoteUser}]] is about to add a joke!</h3>
+	
+	<form action="#" th:action="@{/new}" th:object="${jokeForm}" method="post">
+		
+		Category: 
+		<select th:field="*{category}">
+			<option th:each="cate : ${categories}" th:value="${cate.id}"
+				th:text="${cate.name}">
+		</select> 
+		<span th:if="${#fields.hasErrors('category')}"> Joke must have a category </span> <br><br>
+			
+		<textarea th:field="*{content}" placeholder="Write joke here..."></textarea>
+		<span th:if="${#fields.hasErrors('content')}"> Empty field is not a joke</span> <br>
+		<button type="submit">Submit</button>
+	</form>
+</body>
+</html>

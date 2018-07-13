@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Jokes</title>
+    <style>
+    table, th, td {
+    	border: 1px solid black;
+    	border-collapse: collapse;
+    	padding: 9px
+	}
+    </style>
+</head>
+<body>
+    <table>
+    <thead>
+    	<tr>
+    		<th>#</th>
+    		<th>Category</th>
+    		<th>Joke</th>
+    		<th>Likes</th>
+    		<th>Dislikes</th>
+    		<th>Difference</th>
+    	</tr>
+    </thead>
+    <tbody>
+      	<tr th:each="item : ${items}">
+         	<td th:text="${item.rank}">0</td>
+         	<td th:text="${item.joke.category.name}">...</td>
+         	<td th:text="${item.joke.content}">...</td>
+         	<td th:text="${item.joke.likes}">0</td>
+         	<td th:text="${item.joke.dislikes}">0</td>
+         	<td th:text="${item.difference}">0</td>
+         	<td>
+         	<form method="post" th:action="@{/like/y/{id}(id=${item.joke.id})}">
+         		<input type="hidden" name="page" th:value="${currentPage}">
+         		<button type="submit">like</button>
+         	</form>
+         	</td> 
+         	<td>
+         	<form method="post" th:action="@{/like/n/{id}(id=${item.joke.id})}">
+         		<input type="hidden" name="page" th:value="${currentPage}">
+         		<button type="submit">dislike</button>
+         	</form>
+         	</td> 
+      	</tr>
+   	</tbody>
+	</table>
+	
+	<br>
+	
+	<th:block th:each="i: ${#numbers.sequence(1, numberOfPages)}">
+    	<a th:href="@{'?page=' + ${i}}" th:if="${currentPage == i}" class="active"> <span th:text="${i}" th:remove="tag"></span> </a>
+    	<a th:href="@{'?page=' + ${i}}" th:unless="${currentPage == i}"> <span th:text="${i}" th:remove="tag"></span> </a>
+	</th:block>
+</body>
+</html>
